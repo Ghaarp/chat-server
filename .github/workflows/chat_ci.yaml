@@ -10,7 +10,7 @@ env:
   REGISTRY: "cr.selcloud.ru/f32f3g423w23efg32"
   IMAGE_NAME: "chat_service"
   CONTAINER_NAME: "chat_service-container"
-  PORT: 50053
+  PORT: 50060
 
 jobs:
   image-build-and-push:
