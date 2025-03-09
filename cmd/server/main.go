@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 
@@ -13,7 +14,7 @@ import (
 
 const (
 	address = "localhost:"
-	port    = "3000"
+	port    = 50053
 )
 
 type server struct {
@@ -40,7 +41,7 @@ func (serv *server) SendMessage(context context.Context, in *generated.SendMessa
 
 func main() {
 
-	listener, err := net.Listen("tcp", address+port)
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 
 	if err != nil {
 		log.Fatal(err)
