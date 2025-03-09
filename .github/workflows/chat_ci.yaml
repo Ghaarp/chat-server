@@ -15,7 +15,7 @@ env:
 jobs:
   image-build-and-push:
     runs-on: ubuntu-latest
-    environment: auth-env
+    environment: chat-env
 
     steps:
       - name: Checkout master
