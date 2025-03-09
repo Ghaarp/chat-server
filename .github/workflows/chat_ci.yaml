@@ -35,7 +35,7 @@ jobs:
 
   deploy-image:
     runs-on: ubuntu-latest
-    environment: auth-env
+    environment: chat-env
     needs: image-build-and-push
 
     steps:
