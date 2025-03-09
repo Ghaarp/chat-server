@@ -9,5 +9,5 @@ RUN go build -o ./bin/chat_service cmd/server/main.go
 FROM alpine:latest
 
 WORKDIR /root/
-COPY --from=builder /github.com/Ghaarp/auth/cmd/bin/chat_service .
+COPY --from=builder /github.com/Ghaarp/chat-server/cmd/bin/chat_service .
 CMD ["./chat_service"]
