@@ -43,7 +43,7 @@ jobs:
       - name: Debug secrets availability
         run: |
           if [ -z "${{ secrets.SSH_KEY }}" ]; then
-            echo "SSH_KEY is not set"
+            echo "SSH_KEY is not set" 
           else
             echo "SSH_KEY is set"
           fi

@@ -1,0 +1,39 @@
+volumes:
+  postgres_volume:
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: chat-service.Dockerfile
+    container_name: chat-service
+    env_file: docker.env
+    command: ["sh", "-c", "env && ./chat_service"]
+    depends_on:
+      - db
+    ports:
+      - "${CHAT_PORT}:${CHAT_PORT}"
+
+  migrator:
+    build:
+      context: .
+      dockerfile: migrator.Dockerfile
+    restart: on-failure
+    env_file: docker.env
+    environment:
+      DB_HOST: ${PG_HOST}
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14-alpine3.17
+    container_name: chat-db
+    env_file: docker.env
+    environment:
+      POSTGRES_DB: ${PG_DATABASE_NAME}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    ports:
+      - "${PG_PORT}:5432"
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
