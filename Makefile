@@ -29,3 +29,6 @@ docker-build-and-push:
 	docker buildx build --no-cache --platform linux/amd64 -t cr.selcloud.ru/f32f3g423w23efg32/chat-server:v0.0.1 .
 	docker login -u token -p CRgAAAAAKcaswcPkDDMcFxAShN9RJ-1I5cV1GzFN cr.selcloud.ru/f32f3g423w23efg32
 	docker push cr.selcloud.ru/f32f3g423w23efg32/chat-server:v0.0.1
+
+run:
+	docker-compose --env-file docker.env up --build

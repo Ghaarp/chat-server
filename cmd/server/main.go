@@ -2,20 +2,23 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"flag"
 	"log"
 	"net"
 
+	"github.com/Ghaarp/chat-server/internal/config"
 	generated "github.com/Ghaarp/chat-server/pkg/chat_v1"
 	"github.com/fatih/color"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
-const (
-	address = "localhost:"
-	port    = 50060
-)
+var configPath string
+
+func init() {
+	flag.StringVar(&configPath, "config-path", ".env", "path to config file")
+}
 
 type server struct {
 	generated.UnimplementedChatV1Server
@@ -41,8 +44,36 @@ func (serv *server) SendMessage(context context.Context, in *generated.SendMessa
 
 func main() {
 
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	flag.Parse()
+	ctx := context.Background()
 
+	err := config.Load(configPath)
+	if err != nil {
+		log.Print("Unable to load .env")
+	}
+
+	chatConfig, err := config.NewChatConfig()
+	if err != nil {
+		log.Fatal("Unable to load chat config")
+	}
+
+	dbconfig, err := config.NewDBConfig()
+	if err != nil {
+		log.Fatal("Unable to load DB config")
+	}
+
+	pool, err := pgxpool.Connect(ctx, dbconfig.DSN())
+	if err != nil {
+		log.Printf("Failed to connect to database: %v", err)
+	}
+	defer pool.Close()
+
+	turnOnServer(chatConfig)
+
+}
+
+func turnOnServer(conf config.ChatConfig) {
+	listener, err := net.Listen("tcp", conf.Address())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,12 +83,9 @@ func main() {
 	a := &server{}
 	generated.RegisterChatV1Server(serverObj, a)
 
-	log.Printf("Server started om %v", listener.Addr())
+	log.Printf("Server started on %v", listener.Addr())
 
 	if err := serverObj.Serve(listener); err != nil {
 		log.Fatal(err)
 	}
-
 }
-
-func turnOnServer(conf *ChatConfig)
