@@ -59,3 +59,5 @@ func main() {
 	}
 
 }
+
+func turnOnServer(conf *ChatConfig)
