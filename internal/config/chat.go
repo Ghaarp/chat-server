@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"net"
 	"os"
 )
 
@@ -20,8 +19,8 @@ type chatConfig struct {
 	port string
 }
 
-func (ac *chatConfig) Address() string {
-	return net.JoinHostPort(ac.host, ac.port)
+func (cc *chatConfig) Address() string {
+	return fmt.Sprintf(":%s", cc.port)
 }
 
 func NewChatConfig() (ChatConfig, error) {
