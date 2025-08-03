@@ -2,6 +2,28 @@ package main
 
 import (
 	"context"
+	"log"
+
+	"github.com/Ghaarp/chat-server/internal/app"
+)
+
+func main() {
+	ctx := context.Background()
+	application, err := app.NewApp(ctx)
+	if err != nil {
+		log.Fatalf("failed to init app: %s", err.Error())
+	}
+
+	err = application.Run()
+	if err != nil {
+		log.Fatalf("failed to run app: %s", err.Error())
+	}
+}
+
+/*package main
+
+import (
+	"context"
 	"flag"
 	"log"
 	"net"
@@ -199,4 +221,4 @@ func turnOnServer(conf config.ChatConfig, pool *pgxpool.Pool) {
 	if err := serverObj.Serve(listener); err != nil {
 		log.Fatal(err)
 	}
-}
+}*/
