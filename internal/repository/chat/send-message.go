@@ -11,7 +11,7 @@ func (repo *repo) SendMessage(ctx context.Context, data *model.SendMessageReques
 
 	builder := sq.Insert("messages").PlaceholderFormat(sq.Dollar).
 		Columns("chat_id", "author", "content").
-		Values(data.ChatId, data.From, data.Text)
+		Values(data.Chatid, data.From, data.Text)
 
 	query, args, err := builder.ToSql()
 	if err != nil {

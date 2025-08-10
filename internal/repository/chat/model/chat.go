@@ -12,7 +12,7 @@ type CreateRequest struct {
 
 type SendMessageRequest struct {
 	From      int64
-	ChatId    int64
+	Chatid    int64
 	Text      string
 	Timestamp time.Time
 }

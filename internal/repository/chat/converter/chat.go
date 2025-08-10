@@ -23,7 +23,7 @@ func (c *ChatConverter) ToCreateRequest(req *serviceModel.CreateRequest) *repoMo
 func (c *ChatConverter) ToSendMessageRequest(req *serviceModel.SendMessageRequest) *repoModel.SendMessageRequest {
 	return &repoModel.SendMessageRequest{
 		From:      req.From,
-		ChatId:    req.ChatId,
+		Chatid:    req.Chatid,
 		Text:      req.Text,
 		Timestamp: req.Timestamp,
 	}

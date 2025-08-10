@@ -23,7 +23,7 @@ func (c *ChatConverter) ToCreateRequest(req *generated.CreateRequest) *serviceDe
 func (c *ChatConverter) ToSendMessageRequest(req *generated.SendMessageRequest) *serviceDef.SendMessageRequest {
 	return &serviceDef.SendMessageRequest{
 		From:      req.From,
-		ChatId:    req.Chatid,
+		Chatid:    req.Chatid,
 		Text:      req.Text,
 		Timestamp: req.Timestamp.AsTime(),
 	}

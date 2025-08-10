@@ -45,7 +45,7 @@ func TestSendMessage(t *testing.T) {
 
 		model = &model.SendMessageRequest{
 			From:      from,
-			ChatId:    chatId,
+			Chatid:    chatId,
 			Text:      text,
 			Timestamp: timestamp,
 		}
