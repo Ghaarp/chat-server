@@ -32,3 +32,9 @@ docker-build-and-push:
 
 run:
 	docker-compose --env-file docker.env up --build
+
+minimock-generate:
+	go generate ./...
+
+test-all:
+	go test ./...
