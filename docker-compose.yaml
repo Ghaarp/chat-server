@@ -12,8 +12,9 @@ services:
     depends_on:
       - db
     ports:
-      - "${CHAT_PORT}:${CHAT_PORT}"
-
+      - "${GRPC_PORT}:${GRPC_PORT}"
+      - "${HTTP_PORT}:${HTTP_PORT}"
+      
   migrator:
     build:
       context: .

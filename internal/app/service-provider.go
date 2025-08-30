@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"flag"
 	"log"
 
 	configDef "github.com/Ghaarp/chat-server/internal/config"
@@ -17,8 +18,9 @@ import (
 )
 
 type serviceProvider struct {
-	dbConfig     configDef.DBConfig
-	serverConfig configDef.ChatConfig
+	dbConfig   configDef.DBConfig
+	grpcConfig configDef.Config
+	httpConfig configDef.Config
 
 	repository          repositoryDef.ChatRepository
 	repositoryConverter repositoryDef.RepoConverter
@@ -28,6 +30,13 @@ type serviceProvider struct {
 }
 
 func newServiceProvider() *serviceProvider {
+	var configPath string
+	flag.StringVar(&configPath, "config-path", ".env", "path to config file")
+
+	err := configDef.Load(configPath)
+	if err != nil {
+		log.Print("Unable to load .env")
+	}
 	return &serviceProvider{}
 }
 
@@ -49,20 +58,26 @@ func (sp *serviceProvider) DBConfig() configDef.DBConfig {
 	return sp.dbConfig
 }
 
-func (sp *serviceProvider) ServerConfig(configPath string) configDef.ChatConfig {
-	if sp.serverConfig == nil {
-		err := configDef.Load(configPath)
-		if err != nil {
-			log.Print("Unable to load .env")
-		}
-
-		cfg, err := configDef.NewChatConfig()
+func (sp *serviceProvider) GRPCConfig() configDef.Config {
+	if sp.grpcConfig == nil {
+		cfg, err := configDef.NewGrpcConfig()
 		if err != nil {
 			panic(err)
 		}
-		sp.serverConfig = cfg
+		sp.grpcConfig = cfg
 	}
-	return sp.serverConfig
+	return sp.grpcConfig
+}
+
+func (sp *serviceProvider) HttpConfig() configDef.Config {
+	if sp.httpConfig == nil {
+		cfg, err := configDef.NewHttpConfig()
+		if err != nil {
+			panic(err)
+		}
+		sp.httpConfig = cfg
+	}
+	return sp.httpConfig
 }
 
 func (sp *serviceProvider) RepositoryConverter() repositoryDef.RepoConverter {
